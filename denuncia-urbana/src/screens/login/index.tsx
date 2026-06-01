@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import {Text, View, Image,TextInput, TouchableOpacity} from 'react-native';
+import { loginUser } from "../../services/authService";
+
+import {Text, View, Image, Alert} from 'react-native';
 import {style} from "./style";
 import logo from '../../assets/denunciante.png'
 import {MaterialIcons, Octicons} from '@expo/vector-icons'
@@ -12,6 +14,58 @@ export default function Login (){
     const[email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(true);
+    const [loading, setLoading] = useState(false);
+
+    const showMessage = (title: string, message: string) => {
+        if (typeof window !== "undefined") {
+            window.alert(`${title}\n\n${message}`);
+         } else {
+            Alert.alert(title, message);
+    }
+};
+
+   const handleLogin = async () => {
+    if (!email || !password) {
+        showMessage(
+            "Campos obrigatórios",
+            "Preencha email e senha."
+        );
+        return;
+    }
+    try {
+        setLoading(true);
+        const userCredential = await loginUser(
+            email,
+            password
+        );
+        showMessage(
+            "Sucesso",
+            "Login realizado com sucesso!"
+        );
+    } catch (error: any) {
+        switch (error.code) {
+            case "auth/invalid-email":
+                showMessage(
+                    "Erro",
+                    "Email inválido."
+                );
+                break;
+            case "auth/invalid-credential":
+                showMessage(
+                    "Erro",
+                    "Email ou senha incorretos."
+                );
+                break;
+            default:
+                showMessage(
+                    "Erro",
+                    "Não foi possível realizar o login."
+                );
+        }
+    } finally {
+        setLoading(false);
+    }
+};
     
     return (
         <View style={style.container}>
@@ -44,6 +98,8 @@ export default function Login (){
             <View style={style.boxBottom}>
                    <Button
                         text="Entrar"
+                        onPress={handleLogin}
+                        loading={loading}
                    />
             </View>
             <Text style={style.textBottom}>Não tem conta? <Text style={{color:themas.color.primary}}>Crie agora!</Text></Text>
