@@ -9,12 +9,16 @@ import {MaterialIcons, Octicons} from '@expo/vector-icons'
 import { themas } from "../../global/themes";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useNavigation, NavigationProp} from "@react-navigation/native";
 
 export default function Login (){
     const[email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    const navigation = useNavigation<NavigationProp<any>>();
+ 
 
     const showMessage = (title: string, message: string) => {
         if (typeof window !== "undefined") {
@@ -38,10 +42,8 @@ export default function Login (){
             email,
             password
         );
-        showMessage(
-            "Sucesso",
-            "Login realizado com sucesso!"
-        );
+        navigation.navigate("BottomNavigator")
+
     } catch (error: any) {
         switch (error.code) {
             case "auth/invalid-email":
@@ -79,20 +81,20 @@ export default function Login (){
             </View>
             <View style={style.boxMid}>
                 <Input 
-                value={email}
-                onChangeText={setEmail}
-                title="Endereço de e-mail"
-                IconRight={MaterialIcons}
-                iconRightName="email"
+                    value={email}
+                    onChangeText={setEmail}
+                    title="Endereço de e-mail"
+                    IconRight={MaterialIcons}
+                    iconRightName="email"
                 />
                 <Input 
-                value={password}
-                onChangeText={setPassword}
-                title="Senha"
-                IconRight={Octicons}
-                iconRightName={showPassword?"eye-closed":"eye"}
-                secureTextEntry={showPassword}
-                onIconRightPress={()=> setShowPassword(!showPassword)}
+                    value={password}
+                    onChangeText={setPassword}
+                    title="Senha"
+                    IconRight={Octicons}
+                    iconRightName={showPassword?"eye-closed":"eye"}
+                    secureTextEntry={showPassword}
+                    onIconRightPress={()=> setShowPassword(!showPassword)}
                 />
             </View>
             <View style={style.boxBottom}>
