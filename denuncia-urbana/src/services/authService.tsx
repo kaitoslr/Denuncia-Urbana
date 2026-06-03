@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 
@@ -26,13 +27,12 @@ export const registerUser = async ({
     auth,
     email,
     password
-  );
+);
 
   try {
     await updateProfile(userCredential.user, {
       displayName: name,
     });
-
     await setDoc(doc(db, "users", userCredential.user.uid), {
       uid: userCredential.user.uid,
       name,
@@ -50,4 +50,8 @@ export const registerUser = async ({
 
 export const loginUser = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const logoutUser = async () => {
+  return await signOut(auth);
 };
