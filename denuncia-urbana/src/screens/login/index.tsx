@@ -42,7 +42,7 @@ export default function Login (){
             email,
             password
         );
-        navigation.navigate("BottomNavigator")
+        navigation.reset({routes:[{name:"BottomNavigator"}]})
 
     } catch (error: any) {
         switch (error.code) {
