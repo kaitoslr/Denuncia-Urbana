@@ -110,9 +110,34 @@ export default function Home() {
 
             <View style={styles.boxReport}>
                 <FlatList
+                    ListEmptyComponent={
+                        <View
+                            style={{
+                                marginTop: 100,
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text style={{ fontSize: 60 }}>
+                                📭
+                            </Text>
+
+                            <Text
+                                style={{
+                                    marginTop: 10,
+                                    fontSize: 18,
+                                }}
+                            >
+                                Nenhuma denúncia encontrada
+                            </Text>
+                            <Text>
+                                Crie sua primeira denúncia usando o botão +
+                            </Text>
+                        </View>
+                    }
                     data={reports}
                     keyExtractor={(item) => item.id!}
                     renderItem={({ item }) => (
+
                         <TouchableOpacity
                             onPress={() =>
                                 navigation.navigate(

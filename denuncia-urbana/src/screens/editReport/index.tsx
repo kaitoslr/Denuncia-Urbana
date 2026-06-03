@@ -15,6 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import { Report } from "../../types/Report";
 import { FlatList } from "react-native-gesture-handler";
+import { Picker } from "@react-native-picker/picker";
 
 export default function EditReport({ route, navigation, }: any) {
     const {
@@ -28,7 +29,34 @@ export default function EditReport({ route, navigation, }: any) {
     const [category, setCategory] = useState(initialCategory);
     const [description, setDescription] = useState(initialDescription);
     const [location, setLocation] = useState(initialLocation);
-    const [reports, setReports] = useState<Report[]>([]);
+
+
+    const categories = [
+        {
+            label: "🛣️ Infraestrutura",
+            value: "Infraestrutura",
+        },
+        {
+            label: "💡 Iluminação",
+            value: "Iluminação",
+        },
+        {
+            label: "🦟 Dengue",
+            value: "Dengue",
+        },
+        {
+            label: "🧹 Limpeza Urbana",
+            value: "Limpeza Urbana",
+        },
+        {
+            label: "🛡️ Segurança",
+            value: "Segurança",
+        },
+        {
+            label: "📌 Outros",
+            value: "Outros",
+        },
+    ];
 
     const handleDelete = async () => {
 
@@ -112,16 +140,56 @@ export default function EditReport({ route, navigation, }: any) {
                     }}
                 />
 
-                <TextInput
-                    value={category}
-                    onChangeText={setCategory}
-                    placeholder="Categoria"
+                <Text
                     style={{
-                        borderWidth: 1,
-                        padding: 10,
-                        marginBottom: 15,
+                        fontWeight: "bold",
+                        marginBottom: 10,
                     }}
-                />
+                >
+                    Categoria
+                </Text>
+
+                <View
+                    style={{
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        gap: 10,
+                        marginBottom: 20,
+                    }}
+                >
+                    {categories.map((item) => (
+                        <TouchableOpacity
+                            key={item.value}
+                            onPress={() =>
+                                setCategory(item.value)
+                            }
+                            style={{
+                                paddingVertical: 10,
+                                paddingHorizontal: 15,
+                                borderRadius: 10,
+
+                                backgroundColor:
+                                    category === item.value
+                                        ? "#1E88E5"
+                                        : "#F1F1F1",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color:
+                                        category === item.value
+                                            ? "#FFF"
+                                            : "#333",
+
+                                    fontWeight: "600",
+                                }}
+                            >
+                                {item.label}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+
                 <TextInput
                     value={location}
                     onChangeText={setLocation}
