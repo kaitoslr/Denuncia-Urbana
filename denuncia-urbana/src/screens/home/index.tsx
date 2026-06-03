@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import {
     FlatList,
@@ -7,7 +7,7 @@ import {
     View,
 } from "react-native";
 
-import {getUserReports} from "../../services/reportService";
+import { getUserReports } from "../../services/reportService";
 
 import { Report } from "../../types/Report";
 import { useFocusEffect } from "@react-navigation/native";
@@ -23,6 +23,8 @@ import { Flag } from "../../components/Flag";
 export default function Home() {
     const navigation = useNavigation<any>();
     const [reports, setReports] = useState<Report[]>([]);
+    const [allReports, setAllReports] = useState<Report[]>([]);
+    const [search, setSearch] = useState("");
 
     const loadReports = async () => {
         try {
@@ -30,6 +32,7 @@ export default function Home() {
             const data = await getUserReports();
 
             setReports(data);
+            setAllReports(data);
 
         } catch (error) {
             console.log(error);
@@ -42,6 +45,33 @@ export default function Home() {
         }, [])
     );
 
+    const filterReports = (text: string) => {
+        setSearch(text);
+        if (!text.trim()) {
+            setReports(allReports);
+            return;
+        }
+        const filtered =
+            allReports.filter(report =>
+                report.title
+                    .toLowerCase()
+                    .includes(text.toLowerCase())
+                ||
+                report.category
+                    .toLowerCase()
+                    .includes(text.toLowerCase())
+                ||
+                report.location
+                    .toLowerCase()
+                    .includes(text.toLowerCase())
+                ||
+                report.status
+                    .toLowerCase()
+                    .includes(text.toLowerCase())
+            );
+        setReports(filtered);
+    };
+
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -50,7 +80,7 @@ export default function Home() {
 
             case "Em análise":
                 return "#FFC107";
-                
+
             case "Andamento":
                 return "#FFC107";
 
@@ -69,9 +99,11 @@ export default function Home() {
                     Minhas denuncias
                 </Text>
                 <View style={styles.boxInput}>
-                    <Input 
-                    IconLeft={MaterialIcons}
-                    iconLeftName="search"
+                    <Input
+                        IconLeft={MaterialIcons}
+                        iconLeftName="search"
+                        value={search}
+                        onChangeText={filterReports}
                     />
                 </View>
             </View>
@@ -82,31 +114,32 @@ export default function Home() {
                     keyExtractor={(item) => item.id!}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate(
-                                        "EditReport",
-                                        {
-                                            reportId: item.id,
-                                            title: item.title,
-                                            category: item.category,
-                                            description: item.description,
-                                        }
-                                    )
-                                }
-                                style={styles.card}
-                            >
-                                    <View style={styles.rowCard}>
-                                        <View style={styles.rowCardLeft}>
-                                            <Ball color={getStatusColor(item.status)}/>
-                                                <View>
-                                                    <Text style={styles.reportTitle}>{item.title}</Text>
-                                                    <Text style={styles.reportText}>{item.category}</Text>
-                                                </View>
-                                        </View>
-                                        <Flag color= {getStatusColor(item.status)} caption= {item.status}/>
+                            onPress={() =>
+                                navigation.navigate(
+                                    "EditReport",
+                                    {
+                                        reportId: item.id,
+                                        title: item.title,
+                                        category: item.category,
+                                        description: item.description,
+                                        location: item.location,
+                                    }
+                                )
+                            }
+                            style={styles.card}
+                        >
+                            <View style={styles.rowCard}>
+                                <View style={styles.rowCardLeft}>
+                                    <Ball color={getStatusColor(item.status)} />
+                                    <View>
+                                        <Text style={styles.reportTitle}>{item.title}</Text>
+                                        <Text style={styles.reportText}>{item.category}</Text>
                                     </View>
+                                </View>
+                                <Flag color={getStatusColor(item.status)} caption={item.status} />
+                            </View>
                         </TouchableOpacity>
-                        
+
                     )}
                 />
             </View>
