@@ -1,49 +1,60 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import { themas } from "../../global/themes";
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#F5F5F5",
-  },
+    container: {
+        flex: 1,
+    },
 
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
+    header: {
+        width: '100%',
+        backgroundColor: themas.color.primary,
+        height: Dimensions.get('window').height / 6,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
 
-  card: {
-    backgroundColor: "#FFF",
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 15,
-    elevation: 3,
-  },
+    },
 
-  reportTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
+    title: {
+        fontSize: 20,
+        color: '#fff',
+        marginTop: 5
+    },
+    boxInput: {
+        width: '80%',
+    },
+    boxReport: {
+        flex:1,
+        width:'100%',
+    },
+    rowCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    card:{
+        width:'100%',
+        minHeight:60,
+        backgroundColor:'#FFF',
+        marginTop:6,
+        borderRadius:10,
+        justifyContent:'center',
+        padding:10,
+        borderWidth:1,
+        borderColor:themas.color.lightGray
+    },
+    rowCardLeft:{
+        width:'70%',
+        flexDirection:'row',
+        gap:10,
+        alignItems:'center'
+    },
+    reportTitle: {
+        fontSize:16,
+        fontWeight:'bold'
+    },
 
-  reportText: {
-    marginBottom: 4,
-  },
-
-  buttonRow: {
-    flexDirection: "row",
-    marginTop: 15,
-    gap: 20,
-  },
-
-  editButton: {
-    color: "#2196F3",
-    fontWeight: "bold",
-  },
-
-  deleteButton: {
-    color: "#F44336",
-    fontWeight: "bold",
-  },
+    reportText: {
+        color:themas.color.gray
+    },
 });

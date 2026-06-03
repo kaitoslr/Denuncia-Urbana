@@ -1,25 +1,24 @@
-import React, {
-    useEffect,
-    useState,
-} from "react";
+import React, {useState} from "react";
 
 import {
-    Alert,
     FlatList,
     Text,
     TouchableOpacity,
     View,
 } from "react-native";
 
-import {
-    deleteReport,
-    getUserReports,
-} from "../../services/reportService";
+import {getUserReports} from "../../services/reportService";
 
 import { Report } from "../../types/Report";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "./style";
+import { Input } from "../../components/Input";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Ball } from "../../components/Ball";
+import { Flag } from "../../components/Flag";
+
 
 export default function Home() {
     const navigation = useNavigation<any>();
@@ -43,94 +42,74 @@ export default function Home() {
         }, [])
     );
 
-    const handleDelete = async (reportId: string) => {
-        const confirmed = window.confirm(
-            "Deseja realmente excluir esta denúncia?"
-        );
-        if (!confirmed) return;
-        try {
-            await deleteReport(reportId);
-            await loadReports();
-        }
-        catch (error) {
-            console.log(error);
-        }
-    };
 
     const getStatusColor = (status: string) => {
         switch (status) {
             case "Aberto":
-                return "#F44336";
+                return "#44ca44";
 
             case "Em análise":
+                return "#FFC107";
+                
+            case "Andamento":
                 return "#FFC107";
 
             case "Resolvido":
                 return "#4CAF50";
 
             default:
-                return "#000";
+                return "#333333";
         }
     };
 
     return (
-        <View style={{ flex: 1, padding: 20, }}>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.title}>
+                    Minhas denuncias
+                </Text>
+                <View style={styles.boxInput}>
+                    <Input 
+                    IconLeft={MaterialIcons}
+                    iconLeftName="search"
+                    />
+                </View>
+            </View>
 
-            <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20, }}>
-                Minhas Denúncias
-            </Text>
-
-            <FlatList
-                data={reports}
-                keyExtractor={(item) => item.id!}
-                renderItem={({ item }) => (
-
-                    <View
-                        style={{
-                            padding: 15,
-                            borderRadius: 10,
-                            backgroundColor: "#FFF",
-                            marginBottom: 15,
-                        }}
-                    >
-
-                        <Text style={{ fontWeight: "bold", fontSize: 18, }}>
-                            {item.title}
-                        </Text>
-
-                        <Text>
-                            {item.category}
-                        </Text>
-
-                        <Text style={{ color: getStatusColor(item.status), fontWeight: "bold", }}>
-                            Status: {item.status}
-                        </Text>
-
+            <View style={styles.boxReport}>
+                <FlatList
+                    data={reports}
+                    keyExtractor={(item) => item.id!}
+                    renderItem={({ item }) => (
                         <TouchableOpacity
-                            onPress={() =>
-                                navigation.navigate(
-                                    "EditReport",
-                                    {
-                                        reportId: item.id,
-                                        title: item.title,
-                                        category: item.category,
-                                        description: item.description,
-                                    }
-                                )
-                            }
-                        >
-                            <Text style={{ color: "blue", fontWeight: "bold", marginTop: 10, }}>
-                                Editar
-                            </Text>
+                                onPress={() =>
+                                    navigation.navigate(
+                                        "EditReport",
+                                        {
+                                            reportId: item.id,
+                                            title: item.title,
+                                            category: item.category,
+                                            description: item.description,
+                                        }
+                                    )
+                                }
+                                style={styles.card}
+                            >
+                                    <View style={styles.rowCard}>
+                                        <View style={styles.rowCardLeft}>
+                                            <Ball color={getStatusColor(item.status)}/>
+                                                <View>
+                                                    <Text style={styles.reportTitle}>{item.title}</Text>
+                                                    <Text style={styles.reportText}>{item.category}</Text>
+                                                </View>
+                                        </View>
+                                        <Flag color= {getStatusColor(item.status)} caption= {item.status}/>
+                                    </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleDelete(item.id!)} style={{ marginTop: 10, }}>
-                            <Text style={{ color: "red", fontWeight: "bold", }}>
-                                Excluir
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-            />
+                        
+                    )}
+                />
+            </View>
         </View>
     );
 }

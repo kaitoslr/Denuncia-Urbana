@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { auth } from "../../database/firebase";
 import { Button } from "../../components/Button";
 import { logoutUser } from "../../services/authService";
 import { useNavigation } from "@react-navigation/native";
-
+import { getUserReports } from "../../services/reportService";
 import { style } from "./style";
 
 export default function User() {
 
-const navigation = useNavigation();
+    const navigation = useNavigation();
 
-const handleLogout = async () => {
-    try {
-        await logoutUser();
+    const [totalReports, setTotalReports] = useState(0);
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Login" as never }],
             });
-        } 
+        }
         catch (error) {
             console.log(error);
         }
@@ -26,7 +28,7 @@ const handleLogout = async () => {
 
     return (
         <View style={style.container}>
-            
+
             <Text style={style.title}>
                 Meu Perfil
             </Text>

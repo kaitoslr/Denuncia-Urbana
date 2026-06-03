@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 
+import React, { useState, } from "react";
 import {
     View,
     Text,
@@ -7,28 +7,44 @@ import {
     TouchableOpacity,
 } from "react-native";
 
-import { updateReport } from "../../services/reportService";
+import { updateReport, deleteReport, getUserReports } from "../../services/reportService";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+import { Report } from "../../types/Report";
+import { FlatList } from "react-native-gesture-handler";
 
-export default function EditReport({
-    route,
-    navigation,
-}: any) {
-
+export default function EditReport({ route, navigation, }: any) {
     const {
         reportId,
         title: initialTitle,
         category: initialCategory,
         description: initialDescription,
     } = route.params;
+    const [title, setTitle] = useState(initialTitle);
+    const [category, setCategory] = useState(initialCategory);
+    const [description, setDescription] = useState(initialDescription);
+    const [reports, setReports] = useState<Report[]>([]);
 
-    const [title, setTitle] =
-        useState(initialTitle);
+    const handleDelete = async () => {
 
-    const [category, setCategory] =
-        useState(initialCategory);
+        const confirmed = window.confirm(
+            "Deseja excluir esta denúncia?"
+        );
+        if (!confirmed) return;
+        try {
+            await deleteReport(reportId);
+            window.alert(
+                "Denúncia excluída com sucesso!"
+            );
+            navigation.goBack();
+        } catch (error) {
+            console.log(error);
+            window.alert(
+                "Erro ao excluir denúncia."
+            );
+        }
+    };
 
-    const [description, setDescription] =
-        useState(initialDescription);
 
     const handleUpdate = async () => {
 
@@ -123,16 +139,24 @@ export default function EditReport({
                     alignItems: "center",
                 }}
             >
-                <Text
-                    style={{
-                        color: "#fff",
-                        fontWeight: "bold",
-                    }}
-                >
+                <Text style={{color: "#fff",fontWeight: "bold",}}>
                     Salvar Alterações
                 </Text>
             </TouchableOpacity>
-
+            <TouchableOpacity
+                onPress={handleDelete}
+                style={{
+                    backgroundColor: "#F44336",
+                    padding: 15,
+                    borderRadius: 10,
+                    alignItems: "center",
+                    marginTop: 15,
+                }}
+            >
+                <Text style={{color: "#FFF",fontWeight: "bold",}}>
+                    Excluir Denúncia
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 }
