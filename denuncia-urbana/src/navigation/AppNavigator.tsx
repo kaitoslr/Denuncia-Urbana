@@ -1,5 +1,6 @@
 import Login from "../screens/login";
 import Home from "../screens/home";
+import signIn from "../screens/signIn";
 import {NavigationContainer} from "@react-navigation/native"
 import {createNativeStackNavigator} from "@react-navigation/native-stack"
 import BottomNavigator from "./BottomNavigator";
@@ -12,17 +13,21 @@ export default function AppNavigator(){
             <Stack.Navigator
                 initialRouteName="Login"
                 screenOptions={{
-                    headerShown:false
+                    headerShown:false,
                     }
                 }
             >
                 <Stack.Screen 
-                    name="Login" 
-                    component={Login}
+                name="Login" 
+                component={Login}
                 />
                 <Stack.Screen 
-                    name="Home"  
-                    component={Home}
+                name="Home"  
+                component={Home}
+                />
+                <Stack.Screen
+                    name="Register"
+                    component={signIn}
                 />
                 <Stack.Screen
                     name="BottomNavigator"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { loginUser } from "../../services/authService";
 
-import {Text, View, Image, Alert} from 'react-native';
+import {Text, View, Image, Alert, TouchableOpacity} from 'react-native';
 import {style} from "./style";
 import logo from '../../assets/denunciante.png'
 import {MaterialIcons, Octicons} from '@expo/vector-icons'
@@ -104,7 +104,12 @@ export default function Login (){
                         loading={loading}
                    />
             </View>
-            <Text style={style.textBottom}>Não tem conta? <Text style={{color:themas.color.primary}}>Crie agora!</Text></Text>
+               <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text style={style.textBottom}>
+                    Não tem conta?{" "}
+                    <Text style={{ color: themas.color.primary }}>Crie agora!</Text>
+                </Text>
+            </TouchableOpacity>
         </View>
             
     )
