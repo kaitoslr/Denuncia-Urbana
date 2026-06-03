@@ -26,4 +26,9 @@ export const style = StyleSheet.create({
         fontWeight: "600",
         marginTop: 5,
     },
+    denuncia:{
+        fontSize:18,
+        fontWeight: "bold",
+        top:5
+    }
 });
