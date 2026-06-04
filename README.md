@@ -159,4 +159,4 @@ Este projeto foi desenvolvido com foco em **impacto social**, permitindo que usu
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **Kaito Shinori**
+Desenvolvido por **Ramon Souza de Lima**
