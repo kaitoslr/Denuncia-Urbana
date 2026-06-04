@@ -20,119 +20,145 @@ Aplicativo mobile desenvolvido em **React Native (Expo)** com integração ao **
   - Total de denúncias
   - Abertas
   - Resolvidas
-- 🔄 Atualização em tempo real ao navegar entre telas
+- 🔄 Atualização automática ao navegar entre telas
 - 🎨 Interface customizada com Bottom Tab Navigation
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - React Native (Expo)
 - TypeScript
 - Firebase Authentication
 - Firebase Firestore
 - Firebase Storage
-- React Navigation (Stack + Bottom Tabs)
+- React Navigation
 - Expo Image Picker
 
 ---
 
-## 📁 Estrutura do projeto
+## 📁 Estrutura do Projeto
+
+```text
 src/
 ├── @types/
-│ ├── png.d.ts
+│   └── png.d.ts
 ├── assets/
-│ ├── denunciante.png
+│   └── denunciante.png
 ├── components/
-│ ├── Ball/
-│ ├── Button/
-│ ├── CustomTabBar/
-│ ├── Flag/
-│ └── Input/
+│   ├── Ball/
+│   ├── Button/
+│   ├── CustomTabBar/
+│   ├── Flag/
+│   └── Input/
 ├── database/
-│ └── firebase.ts
+│   └── firebase.ts
 ├── global/
-│ └── themes.ts
+│   └── themes.ts
 ├── navigation/
-│ ├── AppNavigator.tsx
-│ ├── BottomNavigator.tsx
-│ └── types.ts
+│   ├── AppNavigator.tsx
+│   ├── BottomNavigator.tsx
+│   └── types.ts
 ├── screens/
-│ ├── createReport/
-│ ├── editReport/
-│ ├── home/
-│ ├── login/
-│ ├── signUp/
-│ └── user/
+│   ├── createReport/
+│   ├── editReport/
+│   ├── home/
+│   ├── login/
+│   ├── signUp/
+│   └── user/
 ├── services/
-│ ├── authService.ts
-│ ├── reportService.ts
-├── database/
-│ └── firebase.ts
-├── types/
-│ └── Report.ts
+│   ├── authService.ts
+│   └── reportService.ts
+└── types/
+    └── Report.ts
+```
 
 ---
 
-## 🔥 Banco de dados (Firestore)
+## 🔥 Banco de Dados (Firestore)
 
 ### Coleção: `users`
+
 ```ts
 {
-  uid: string,
-  name: string,
-  email: string,
-  phone: string,
-  createdAt: string
+  uid: string;
+  name: string;
+  email: string;
+  phone: string;
+  createdAt: string;
 }
+```
+
+### Coleção: `reports`
+
+```ts
+{
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  imageUrl: string;
+  status:
+    | "Aberto"
+    | "Em análise"
+    | "Andamento"
+    | "Resolvido"
+    | "Fechado";
+  userId: string;
+  createdAt: string;
+}
+```
 
 ---
 
-Coleção: reports
-{
-  title: string,
-  description: string,
-  category: string,
-  location: string,
-  imageUrl: string,
-  status: "Aberto" | "Resolvido" | "Em análise" |"Andamento"|"Fechado",
-  userId: string,
-  createdAt: string
-}
+## 📦 Instalação e Execução
 
-📦 Instalação e execução
+```bash
 # instalar dependências
 npm install
 
 # iniciar projeto
 npx expo start
+```
 
-🔐 Regras do Firestore
+---
+
+## 🔐 Regras do Firestore
+
+```js
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
     match /users/{userId} {
-      allow create: if request.auth != null && request.auth.uid == userId;
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null
+                    && request.auth.uid == userId;
+
+      allow read, update, delete: if request.auth != null
+                                  && request.auth.uid == userId;
     }
 
     match /reports/{reportId} {
       allow create: if request.auth != null;
+
       allow read: if request.auth != null;
+
       allow update, delete: if request.auth != null
-        && request.auth.uid == resource.data.userId;
+                            && request.auth.uid == resource.data.userId;
     }
   }
 }
+```
 
 ---
 
-💡 Objetivo do projeto
+## 💡 Objetivo do Projeto
 
-Este projeto foi desenvolvido com foco em impacto social, permitindo que usuários registrem problemas urbanos de forma simples, rápida e organizada.
+Este projeto foi desenvolvido com foco em **impacto social**, permitindo que usuários registrem problemas urbanos de forma simples, rápida e organizada.
 
-👨‍💻 Autor
+---
 
-Desenvolvido por Kaito Shinori
+## 👨‍💻 Autor
+
+Desenvolvido por **Kaito Shinori**
