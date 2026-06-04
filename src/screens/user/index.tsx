@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text } from "react-native";
 import { auth } from "../../database/firebase";
 import { Button } from "../../components/Button";
 import { logoutUser } from "../../services/authService";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { getUserReports } from "../../services/reportService";
 import { style } from "./style";
 import { Report } from "../../types/Report";
@@ -16,32 +16,37 @@ export default function User() {
     const [loading, setLoading] = useState(true);
 
     const totalReports = reports.length;
-    const openReports =
-        reports.filter(
-            report =>
-                report.status === "Aberto"
-        ).length;
-    const resolvedReports =
-        reports.filter(
-            report =>
-                report.status === "Resolvido"
-        ).length;
+
+    const openReports = reports.filter(
+        report => report.status === "Aberto"
+    ).length;
+
+    const resolvedReports = reports.filter(
+        report => report.status === "Resolvido"
+    ).length;
 
 
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                const data =
-                    await getUserReports();
-                setReports(data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        loadData();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+
+            const loadData = async () => {
+                try {
+
+                    const data = await getUserReports();
+
+                    setReports(data);
+
+                } catch (error) {
+
+                    console.log(error);
+
+                }
+            };
+
+            loadData();
+
+        }, [])
+    );
 
     const handleLogout = async () => {
         try {
