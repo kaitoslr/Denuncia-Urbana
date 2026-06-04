@@ -31,9 +31,7 @@ Aplicativo mobile desenvolvido em **React Native (Expo)** com integração ao **
 - TypeScript
 - Firebase Authentication
 - Firebase Firestore
-- Firebase Storage
 - React Navigation
-- Expo Image Picker
 
 ---
 
