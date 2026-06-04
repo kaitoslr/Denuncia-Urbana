@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import { createReport } from "../../services/reportService";
-
 import { style } from "./style";
 
 const categories = [
@@ -47,6 +46,7 @@ export default function CreateReport() {
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
 
+
     const handleCreateReport = async () => {
 
         if (
@@ -62,6 +62,7 @@ export default function CreateReport() {
         }
 
         try {
+            
             await createReport({
                 title,
                 category,
@@ -188,8 +189,6 @@ export default function CreateReport() {
                             Enviar Denúncia
                         </Text>
                     </TouchableOpacity>
-
-
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

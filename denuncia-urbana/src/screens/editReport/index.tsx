@@ -10,12 +10,8 @@ import {
     Platform,
 } from "react-native";
 
-import { updateReport, deleteReport, getUserReports } from "../../services/reportService";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
-import { Report } from "../../types/Report";
-import { FlatList } from "react-native-gesture-handler";
-import { Picker } from "@react-native-picker/picker";
+import { updateReport, deleteReport} from "../../services/reportService";
+
 
 export default function EditReport({ route, navigation, }: any) {
     const {

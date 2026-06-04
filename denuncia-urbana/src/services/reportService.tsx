@@ -1,6 +1,6 @@
-import {deleteDoc, doc,  updateDoc, addDoc,collection,getDocs,query,where,orderBy} from "firebase/firestore";
+import { deleteDoc, doc, updateDoc, addDoc, collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { Report } from "../types/Report";
-import { auth, db } from "../database/firebase";
+import { auth, db,} from "../database/firebase";
 
 type CreateReportParams = {
   title: string;
@@ -9,7 +9,7 @@ type CreateReportParams = {
   location: string;
 };
 
-export const createReport = async ({title,description, category,location}: CreateReportParams) => {
+export const createReport = async ({ title, description, category, location,}: CreateReportParams) => {
   return await addDoc(
     collection(db, "reports"),
     {
@@ -26,18 +26,18 @@ export const createReport = async ({title,description, category,location}: Creat
 
 export const getUserReports = async (): Promise<Report[]> => {
 
-const q = query(
-  collection(db, "reports"),
-  where(
-    "userId",
-    "==",
-    auth.currentUser?.uid
-  ),
-  orderBy(
-    "createdAt",
-    "desc"
-  )
-);
+  const q = query(
+    collection(db, "reports"),
+    where(
+      "userId",
+      "==",
+      auth.currentUser?.uid
+    ),
+    orderBy(
+      "createdAt",
+      "desc"
+    )
+  );
 
   const snapshot = await getDocs(q);
 
@@ -53,7 +53,7 @@ export const deleteReport = async (reportId: string) => {
   );
 };
 
-export const updateReport = async (reportId: string,data: 
+export const updateReport = async (reportId: string, data:
   {
     title: string;
     category: string;
